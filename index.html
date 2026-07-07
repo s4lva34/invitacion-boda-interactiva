@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+  <title>Salva y Rocío — Nos casamos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Patrick+Hand&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ============ Definiciones SVG reutilizables ============ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="lineTulip" viewBox="0 0 100 140">
+        <path d="M30 14 C34 20, 37 24, 40 24 C44 18, 46 12, 50 10 C54 12, 56 18, 60 24 C63 24, 66 20, 70 14 C74 32, 68 48, 54 55 C52 55.7, 48 55.7, 46 55 C32 48, 26 32, 30 14 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M50 56 C50 76, 48 96, 49 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+        <path d="M49 98 C38 92, 30 81, 28 66 C40 74, 47 84, 49 98 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M49 112 C60 106, 68 96, 70 81 C58 89, 51 99, 49 112 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+      <symbol id="heart" viewBox="0 0 24 22">
+        <path d="M12 20 C 12 20, 2 13.5, 2 7.5 C 2 4.4, 4.4 2.2, 7.2 2.4 C 9.3 2.6, 11 4.2, 12 6 C 13 4.2, 14.7 2.6, 16.8 2.4 C 19.6 2.2, 22 4.4, 22 7.5 C 22 13.5, 12 20, 12 20 Z"></path>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- ============ Fondo: papel pintado de tulipanes ============ -->
+  <svg class="wallpaper" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="tulipPat" width="250" height="250" patternUnits="userSpaceOnUse" patternTransform="rotate(-3)">
+        <use href="#lineTulip" x="10" y="8" width="70" height="98"></use>
+        <use href="#lineTulip" x="150" y="90" width="55" height="77"></use>
+        <use href="#lineTulip" x="60" y="160" width="48" height="67"></use>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#tulipPat)"></rect>
+  </svg>
+
+  <!-- ============ Tulipanes flotantes de ambiente ============ -->
+  <svg class="drift" viewBox="0 0 100 140" style="left:8%;  width:78px; animation-duration:15s; animation-delay:0s"><use href="#lineTulip" width="100" height="140"></use></svg>
+  <svg class="drift" viewBox="0 0 100 140" style="left:26%; width:64px; animation-duration:19s; animation-delay:4s"><use href="#lineTulip" width="100" height="140"></use></svg>
+  <svg class="drift" viewBox="0 0 100 140" style="left:48%; width:92px; animation-duration:13s; animation-delay:7s"><use href="#lineTulip" width="100" height="140"></use></svg>
+  <svg class="drift" viewBox="0 0 100 140" style="left:66%; width:70px; animation-duration:17s; animation-delay:2s"><use href="#lineTulip" width="100" height="140"></use></svg>
+  <svg class="drift" viewBox="0 0 100 140" style="left:82%; width:84px; animation-duration:21s; animation-delay:9s"><use href="#lineTulip" width="100" height="140"></use></svg>
+  <svg class="drift" viewBox="0 0 100 140" style="left:92%; width:58px; animation-duration:16s; animation-delay:12s"><use href="#lineTulip" width="100" height="140"></use></svg>
+
+  <!-- ====================================================================== -->
+  <!-- PORTADA (GATE): toca el tulipán para entrar                            -->
+  <!-- ====================================================================== -->
+  <div class="gate" id="gate">
+    <div class="gate-inner" id="gateInner">
+      <p class="gate-eyebrow">Estás invitad@ a la boda de</p>
+      <p class="gate-names">Salva y Rocío</p>
+
+      <div class="stage-area">
+        <!-- tulipán inicial -->
+        <svg class="idle-tulip" id="idleTulip" viewBox="0 0 100 140"><use href="#lineTulip" width="100" height="140"></use></svg>
+
+        <!-- suelo -->
+        <svg class="ground" id="ground" viewBox="0 0 300 12" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round"><path d="M4 7 C 58 3, 118 11, 176 6 C 226 2, 268 10, 296 6"></path></svg>
+
+        <!-- CORAZÓN IZQUIERDO -->
+        <div class="figure heartGuy" id="leftFig">
+          <div class="bob" id="leftBob">
+            <svg class="pose" id="leftWalk" viewBox="0 0 130 170" fill="none" stroke="#8c2839" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M65 116 C 32 88, 12 62, 16 41 C 19 24, 38 20, 51 33 C 57 39, 62 44, 65 50 C 68 44, 73 38, 79 32 C 93 20, 111 25, 113 43 C 115 64, 96 90, 65 116 Z"></path>
+              <g class="face"><path d="M50 60 C 53 57, 57 57, 60 60"></path><path d="M70 59 C 73 56, 77 56, 80 59"></path><path d="M52 66 C 55 69, 58 69, 61 66"></path><path d="M71 65 C 74 68, 77 68, 80 65"></path><path d="M61 74 C 66 71, 70 75, 66 78 C 71 80, 66 84, 61 81"></path></g>
+              <g class="leg leg-l"><path d="M58 113 C 54 128, 51 141, 50 151 C 49 156, 47 159, 50 161 C 53 162, 57 161, 59 158"></path></g>
+              <g class="leg leg-r"><path d="M72 113 C 76 128, 79 141, 80 151 C 81 156, 83 159, 80 161 C 77 162, 73 161, 71 158"></path></g>
+              <g class="arm arm-out"><path d="M24 68 C 16 76, 14 84, 17 92"></path></g>
+              <g class="arm arm-in"><path d="M106 68 C 114 76, 116 84, 113 92"></path></g>
+            </svg>
+            <svg class="pose" id="leftHug" viewBox="0 0 130 170" fill="none" stroke="#8c2839" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M65 116 C 32 88, 12 62, 16 41 C 19 24, 38 20, 51 33 C 57 39, 62 44, 65 50 C 68 44, 73 38, 79 32 C 93 20, 111 25, 113 43 C 115 64, 96 90, 65 116 Z"></path>
+              <g class="face"><path d="M50 60 C 53 57, 57 57, 60 60"></path><path d="M70 59 C 73 56, 77 56, 80 59"></path><path d="M52 66 C 55 69, 58 69, 61 66"></path><path d="M71 65 C 74 68, 77 68, 80 65"></path><path d="M61 74 C 66 71, 70 75, 66 78 C 71 80, 66 84, 61 81"></path></g>
+              <path d="M58 113 C 55 129, 53 143, 52 156 C 51 160, 49 162, 52 163 C 55 163, 58 162, 59 159"></path>
+              <path d="M72 113 C 75 129, 77 143, 78 156 C 79 160, 81 162, 78 163 C 75 163, 72 162, 71 159"></path>
+              <path d="M26 66 C 19 60, 21 53, 28 53 C 31 53, 32 57, 31 60"></path>
+              <path d="M98 74 C 112 76, 128 74, 140 69"></path>
+            </svg>
+            <svg class="pose" id="leftHold" viewBox="0 0 130 170" fill="none" stroke="#8c2839" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M65 116 C 32 88, 12 62, 16 41 C 19 24, 38 20, 51 33 C 57 39, 62 44, 65 50 C 68 44, 73 38, 79 32 C 93 20, 111 25, 113 43 C 115 64, 96 90, 65 116 Z"></path>
+              <g class="face"><path d="M50 60 C 53 57, 57 57, 60 60"></path><path d="M70 59 C 73 56, 77 56, 80 59"></path><path d="M52 66 C 55 69, 58 69, 61 66"></path><path d="M71 65 C 74 68, 77 68, 80 65"></path><path d="M61 74 C 66 71, 70 75, 66 78 C 71 80, 66 84, 61 81"></path></g>
+              <g class="leg leg-l"><path d="M58 113 C 54 128, 51 141, 50 151 C 49 156, 47 159, 50 161 C 53 162, 57 161, 59 158"></path></g>
+              <g class="leg leg-r"><path d="M72 113 C 76 128, 79 141, 80 151 C 81 156, 83 159, 80 161 C 77 162, 73 161, 71 158"></path></g>
+              <g class="arm arm-out"><path d="M24 68 C 16 76, 14 84, 17 92"></path></g>
+              <path d="M104 78 C 116 88, 128 98, 139 104"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- CORAZÓN DERECHO (espejado) -->
+        <div class="figure heartGuy" id="rightFig">
+          <div class="bob" id="rightBob">
+            <div class="mirror">
+              <svg class="pose" id="rightWalk" viewBox="0 0 130 170" fill="none" stroke="#8c2839" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M65 116 C 32 88, 12 62, 16 41 C 19 24, 38 20, 51 33 C 57 39, 62 44, 65 50 C 68 44, 73 38, 79 32 C 93 20, 111 25, 113 43 C 115 64, 96 90, 65 116 Z"></path>
+                <g class="face"><path d="M50 60 C 53 57, 57 57, 60 60"></path><path d="M70 59 C 73 56, 77 56, 80 59"></path><path d="M52 66 C 55 69, 58 69, 61 66"></path><path d="M71 65 C 74 68, 77 68, 80 65"></path><path d="M61 74 C 66 71, 70 75, 66 78 C 71 80, 66 84, 61 81"></path></g>
+                <g class="leg leg-l"><path d="M58 113 C 54 128, 51 141, 50 151 C 49 156, 47 159, 50 161 C 53 162, 57 161, 59 158"></path></g>
+                <g class="leg leg-r"><path d="M72 113 C 76 128, 79 141, 80 151 C 81 156, 83 159, 80 161 C 77 162, 73 161, 71 158"></path></g>
+                <g class="arm arm-out"><path d="M24 68 C 16 76, 14 84, 17 92"></path></g>
+                <g class="arm arm-in"><path d="M106 68 C 114 76, 116 84, 113 92"></path></g>
+              </svg>
+              <svg class="pose" id="rightHug" viewBox="0 0 130 170" fill="none" stroke="#8c2839" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M65 116 C 32 88, 12 62, 16 41 C 19 24, 38 20, 51 33 C 57 39, 62 44, 65 50 C 68 44, 73 38, 79 32 C 93 20, 111 25, 113 43 C 115 64, 96 90, 65 116 Z"></path>
+                <g class="face"><path d="M50 60 C 53 57, 57 57, 60 60"></path><path d="M70 59 C 73 56, 77 56, 80 59"></path><path d="M52 66 C 55 69, 58 69, 61 66"></path><path d="M71 65 C 74 68, 77 68, 80 65"></path><path d="M61 74 C 66 71, 70 75, 66 78 C 71 80, 66 84, 61 81"></path></g>
+                <path d="M58 113 C 55 129, 53 143, 52 156 C 51 160, 49 162, 52 163 C 55 163, 58 162, 59 159"></path>
+                <path d="M72 113 C 75 129, 77 143, 78 156 C 79 160, 81 162, 78 163 C 75 163, 72 162, 71 159"></path>
+                <path d="M26 66 C 19 60, 21 53, 28 53 C 31 53, 32 57, 31 60"></path>
+                <path d="M98 74 C 112 76, 128 74, 140 69"></path>
+              </svg>
+              <svg class="pose" id="rightHold" viewBox="0 0 130 170" fill="none" stroke="#8c2839" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M65 116 C 32 88, 12 62, 16 41 C 19 24, 38 20, 51 33 C 57 39, 62 44, 65 50 C 68 44, 73 38, 79 32 C 93 20, 111 25, 113 43 C 115 64, 96 90, 65 116 Z"></path>
+                <g class="face"><path d="M50 60 C 53 57, 57 57, 60 60"></path><path d="M70 59 C 73 56, 77 56, 80 59"></path><path d="M52 66 C 55 69, 58 69, 61 66"></path><path d="M71 65 C 74 68, 77 68, 80 65"></path><path d="M61 74 C 66 71, 70 75, 66 78 C 71 80, 66 84, 61 81"></path></g>
+                <g class="leg leg-l"><path d="M58 113 C 54 128, 51 141, 50 151 C 49 156, 47 159, 50 161 C 53 162, 57 161, 59 158"></path></g>
+                <g class="leg leg-r"><path d="M72 113 C 76 128, 79 141, 80 151 C 81 156, 83 159, 80 161 C 77 162, 73 161, 71 158"></path></g>
+                <g class="arm arm-out"><path d="M24 68 C 16 76, 14 84, 17 92"></path></g>
+                <path d="M104 78 C 116 88, 128 98, 139 104"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- CORAZÓN HIJA (más pequeño, en medio) -->
+        <div class="figure childHeart" id="childFig">
+          <div class="bob" id="childBob">
+            <svg class="pose" id="childWalk" viewBox="0 0 130 170" fill="none" stroke="#8c2839" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M65 116 C 32 88, 12 62, 16 41 C 19 24, 38 20, 51 33 C 57 39, 62 44, 65 50 C 68 44, 73 38, 79 32 C 93 20, 111 25, 113 43 C 115 64, 96 90, 65 116 Z"></path>
+              <g class="face"><path d="M50 60 C 53 57, 57 57, 60 60"></path><path d="M70 59 C 73 56, 77 56, 80 59"></path><path d="M52 66 C 55 69, 58 69, 61 66"></path><path d="M71 65 C 74 68, 77 68, 80 65"></path><path d="M61 74 C 66 71, 70 75, 66 78 C 71 80, 66 84, 61 81"></path></g>
+              <g class="leg leg-l"><path d="M58 113 C 54 128, 51 141, 50 151 C 49 156, 47 159, 50 161 C 53 162, 57 161, 59 158"></path></g>
+              <g class="leg leg-r"><path d="M72 113 C 76 128, 79 141, 80 151 C 81 156, 83 159, 80 161 C 77 162, 73 161, 71 158"></path></g>
+              <g class="arm arm-out"><path d="M24 68 C 16 76, 14 84, 17 92"></path></g>
+              <g class="arm arm-in"><path d="M106 68 C 114 76, 116 84, 113 92"></path></g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- corazoncitos que flotan al abrazarse -->
+        <svg class="heart" id="heart1" style="left:132px; bottom:130px; width:20px; height:20px"><use href="#heart" width="24" height="22" fill="#8c2839"></use></svg>
+        <svg class="heart" id="heart2" style="left:168px; bottom:150px; width:15px; height:15px"><use href="#heart" width="24" height="22" fill="#8c2839"></use></svg>
+        <svg class="heart" id="heart3" style="left:196px; bottom:126px; width:22px; height:22px"><use href="#heart" width="24" height="22" fill="#8c2839"></use></svg>
+        <svg class="heart" id="heart4" style="left:150px; bottom:162px; width:13px; height:13px"><use href="#heart" width="24" height="22" fill="#8c2839"></use></svg>
+        <svg class="heart" id="heart5" style="left:182px; bottom:140px; width:17px; height:17px"><use href="#heart" width="24" height="22" fill="#8c2839"></use></svg>
+      </div>
+
+      <p class="gate-hint" id="gateHint">Toca el tulipán</p>
+    </div>
+  </div>
+
+  <!-- ====================================================================== -->
+  <!-- CONTENIDO PRINCIPAL                                                     -->
+  <!-- ====================================================================== -->
+  <main class="content" id="content" hidden>
+
+    <!-- ===== FRASE ===== -->
+    <section class="hero">
+      <svg class="drift hero-tulip" viewBox="0 0 100 140" style="left:5%;  bottom:8%;  width:88px;  animation-duration:13s; animation-delay:0s"><use href="#lineTulip" width="100" height="140"></use></svg>
+      <svg class="drift hero-tulip" viewBox="0 0 100 140" style="left:84%; bottom:12%; width:100px; animation-duration:16s; animation-delay:4s"><use href="#lineTulip" width="100" height="140"></use></svg>
+
+      <div class="quote-card reveal">
+        <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 3 4 C 32 2, 64 7, 97 3 C 95 34, 98 66, 96 97 C 64 95, 36 99, 4 96 C 5 64, 2 36, 3 4 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+
+        <div class="quote-text">
+          <div><span style="transform:rotate(-2deg)">CUANDO</span> <span style="transform:rotate(1deg)">QUIERES</span></div>
+          <div><span style="transform:rotate(1deg)">PASAR</span> <span>EL</span> <span style="transform:rotate(-1deg)">RESTO</span></div>
+          <div><span>DE</span> <span style="transform:rotate(2deg)">TU</span> <span style="transform:rotate(-1deg)">VIDA</span></div>
+          <div><span>C</span><svg class="inline-heart" viewBox="0 0 24 22" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#heart" width="24" height="22"></use></svg><span>N</span> <span style="transform:rotate(1deg)">ALGUIEN</span></div>
+          <div><span style="transform:rotate(-1deg)">QUIERES</span> <span>QUE</span> <span style="transform:rotate(2deg)">EL</span></div>
+          <div><span style="transform:rotate(1deg)">RESTO</span> <span>DE</span> <span style="transform:rotate(-1deg)">TU</span> <span>VIDA</span></div>
+          <div><span style="transform:rotate(-2deg)">EMPIECE</span> <span class="big" style="transform:rotate(3deg)">YA.</span></div>
+        </div>
+
+        <svg class="card-tulip" viewBox="0 0 100 140"><use href="#lineTulip" width="100" height="140"></use></svg>
+        <p class="quote-sign">SALVA Y ROCÍO</p>
+
+        <div class="brand-mark">
+          <div class="brand-word">
+            <span style="transform:rotate(-6deg) translateY(2px)">b</span><span style="transform:rotate(5deg) translateY(-2px) scale(1.1)">r</span><span style="transform:rotate(-4deg) translateY(1px)">u</span><span style="transform:rotate(7deg) translateY(-3px) scale(.92)">n</span><span style="transform:rotate(-8deg) translateY(2px) scale(1.15)">a</span>
+          </div>
+          <svg class="brand-underline" viewBox="0 0 90 16" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round"><path d="M3 9 C 18 3, 34 13, 50 6 C 63 1, 76 11, 87 5"></path></svg>
+        </div>
+      </div>
+
+      <div class="scroll-hint" aria-hidden="true">
+        <span>Desliza para seguir</span>
+        <svg viewBox="0 0 24 30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 C 11 8, 13 14, 12 22"></path>
+          <path d="M5 17 C 7 21, 9 25, 12 27 C 15 25, 17 21, 19 17"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ===== FECHA ===== -->
+    <section class="date-block">
+      <p class="reveal date-eyebrow">¡Nos casamos!</p>
+      <p class="reveal date-big">10 · 10 · 2026</p>
+      <p class="reveal date-place">Chiclana de la Frontera — El Puerto de Santa María</p>
+    </section>
+
+    <!-- ===== CUENTA ATRÁS ===== -->
+    <section class="countdown-block">
+      <p class="reveal countdown-title">Falta poquito…</p>
+      <div class="reveal countdown-grid">
+        <div class="cd-box">
+          <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <div class="cd-num" id="cd-days" style="animation-delay:0s">--</div>
+          <div class="cd-label">Días</div>
+        </div>
+        <div class="cd-box">
+          <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <div class="cd-num" id="cd-hours" style="animation-delay:.25s">--</div>
+          <div class="cd-label">Horas</div>
+        </div>
+        <div class="cd-box">
+          <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <div class="cd-num" id="cd-mins" style="animation-delay:.5s">--</div>
+          <div class="cd-label">Min</div>
+        </div>
+        <div class="cd-box">
+          <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <div class="cd-num" id="cd-secs" style="animation-delay:.75s">--</div>
+          <div class="cd-label">Seg</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DETALLES ===== -->
+    <section class="details-block">
+      <p class="reveal details-title">El gran día</p>
+      <div class="details-grid">
+        <div class="reveal detail-card">
+          <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.4" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <svg class="detail-tulip" viewBox="0 0 100 140"><use href="#lineTulip" width="100" height="140"></use></svg>
+          <h3>Ceremonia</h3>
+          <p>12:30 hrs<br>Parroquia San Juan Bautista<br>Chiclana de la Frontera</p>
+        </div>
+        <div class="reveal detail-card">
+          <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.4" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <svg class="detail-tulip" viewBox="0 0 100 140"><use href="#lineTulip" width="100" height="140"></use></svg>
+          <h3>Celebración</h3>
+          <p>14:00 hrs<br>Castillo de San Marcos<br>El Puerto de Santa María</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DRESS CODE ===== -->
+    <section class="dress-block">
+      <p class="reveal dress-title">¿Qué me pongo?</p>
+      <p class="reveal dress-sub">Formal, elegante y nada de blancos!!!</p>
+      <div class="reveal dress-icons">
+        <svg viewBox="0 0 48 52" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation-delay:0s">
+          <path d="M20 7 L19 10 M28 7 L29 10"></path>
+          <path d="M19 10 C 22 14, 26 14, 29 10"></path>
+          <path d="M19 10 L17 25 M29 10 L31 25"></path>
+          <path d="M17 25 L31 25"></path>
+          <path d="M17 25 L11 45 L37 45 L31 25"></path>
+        </svg>
+        <svg viewBox="0 0 48 52" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation-delay:.25s">
+          <path d="M14 12 L20 8 L24 22 L28 8 L34 12"></path>
+          <path d="M14 12 L14 45 L34 45 L34 12"></path>
+          <path d="M20 8 L23 20 M28 8 L25 20"></path>
+          <path d="M24 22 L24 45"></path>
+          <circle cx="27" cy="28" r="0.8" fill="#8c2839" stroke="none"></circle>
+          <circle cx="27" cy="34" r="0.8" fill="#8c2839" stroke="none"></circle>
+        </svg>
+        <svg viewBox="0 0 48 52" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation-delay:.5s">
+          <path d="M8 24 Q 22 21 38 26"></path>
+          <path d="M8 24 Q 7 31 13 36"></path>
+          <path d="M38 26 Q 40 33 35 35 Q 22 39 13 36"></path>
+          <path d="M13 36 L12 46 L16 46 L16 35"></path>
+        </svg>
+        <svg viewBox="0 0 48 52" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation-delay:.75s">
+          <path d="M8 34 Q 8 27 16 27 L27 27 Q 36 27 41 34 Q 42 38 38 38 L11 38 Q 8 38 8 34 Z"></path>
+          <path d="M16 27 L17 33 M20 27 L21 33"></path>
+          <path d="M27 27 Q 30 32 34 34"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ===== SOLO ADULTOS ===== -->
+    <section class="kids-block">
+      <div class="reveal kids-dancers">
+        <svg class="dancer" viewBox="0 0 60 76" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="animation-delay:0s">
+          <path d="M30 54 C 15 41, 6 29, 8 19 C 9 11, 18 9, 24 15 C 27 18, 29 21, 30 24 C 31 21, 33 18, 36 15 C 42 9, 51 11, 52 19 C 54 29, 45 41, 30 54 Z"></path>
+          <path d="M12 24 C 6 20, 4 26, 8 30"></path>
+          <path d="M48 20 C 54 18, 55 25, 50 28"></path>
+          <path d="M23 54 C 20 62, 18 68, 20 71"></path>
+          <path d="M37 54 C 40 62, 42 68, 40 71"></path>
+        </svg>
+        <svg class="dancer" viewBox="0 0 60 76" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="animation-delay:.2s">
+          <path d="M30 54 C 15 41, 6 29, 8 19 C 9 11, 18 9, 24 15 C 27 18, 29 21, 30 24 C 31 21, 33 18, 36 15 C 42 9, 51 11, 52 19 C 54 29, 45 41, 30 54 Z"></path>
+          <path d="M10 16 C 5 10, 8 4, 14 6"></path>
+          <path d="M50 16 C 55 10, 52 4, 46 6"></path>
+          <path d="M22 55 C 16 60, 11 61, 7 59"></path>
+          <path d="M38 55 C 44 60, 49 61, 53 59"></path>
+        </svg>
+        <svg class="dancer" viewBox="0 0 60 76" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="animation-delay:.4s">
+          <path d="M30 54 C 15 41, 6 29, 8 19 C 9 11, 18 9, 24 15 C 27 18, 29 21, 30 24 C 31 21, 33 18, 36 15 C 42 9, 51 11, 52 19 C 54 29, 45 41, 30 54 Z"></path>
+          <path d="M12 24 C 6 20, 4 26, 8 30"></path>
+          <path d="M48 20 C 54 18, 55 25, 50 28"></path>
+          <path d="M23 54 C 21 61, 25 67, 22 71"></path>
+          <path d="M37 54 C 39 61, 35 67, 38 71"></path>
+        </svg>
+      </div>
+      <p class="reveal kids-title">¡Esta celebración es solo para adultos!</p>
+      <p class="reveal kids-sub">Queremos disfrutar de vuestra compañía y que vosotros también lo hagáis.<br>¡Queremos mucho a vuestros peques, pero los veremos otro día!</p>
+    </section>
+
+    <!-- ===== REGALO ===== -->
+    <section class="gift-block">
+      <div class="reveal gift-card">
+        <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+        <svg class="gift-icon" viewBox="0 0 60 60" fill="none" stroke="#8c2839" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 34 C 14 24, 22 17, 33 17 C 42 17, 48 22, 50 29 C 54 29, 56 32, 55 36 C 54 39, 51 40, 48 39 C 46 45, 40 49, 32 49 C 25 49, 19 46, 16 41 C 12 41, 9 38, 10 34 C 11 31, 13 30, 14 30"></path>
+          <circle cx="41" cy="28" r="1.1" fill="#8c2839" stroke="none"></circle>
+          <path d="M30 17 L28 12 L34 12 Z"></path>
+          <path d="M22 49 L21 55 M20 49 L18 55"></path>
+          <path d="M40 49 L41 55 M42 49 L43 55"></path>
+        </svg>
+        <p class="gift-title">Nuestro mejor regalo sois vosotros</p>
+        <p class="gift-sub">Pero si además os apetece brindar por nosotros,<br>hemos dejado una hucha virtual abierta… ¡no os diremos que no!</p>
+        <div class="gift-account" id="giftAccount">
+          <span id="giftIban">ES57 0049 0793 5026 1153 7334</span>
+          <button type="button" class="gift-copy" id="giftCopyBtn">Copiar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== RSVP ===== -->
+    <section class="rsvp-block">
+      <form class="reveal rsvp-card" id="rsvpForm">
+        <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 3 4 C 32 2, 64 7, 97 3 C 95 34, 98 66, 96 97 C 64 95, 36 99, 4 96 C 5 64, 2 36, 3 4 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+        <p class="rsvp-title">¿Nos acompañas?</p>
+        <p class="rsvp-sub">Confirma antes del 10 de septiembre 2026</p>
+
+        <div class="rsvp-fields">
+          <input class="rsvp-input" type="text" name="nombre" placeholder="Tu nombre..." autocomplete="name">
+
+          <div class="plusone-toggle" id="plusOneToggle">
+            <span class="checkbox">
+              <svg class="checkbox-box" viewBox="0 0 40 40" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6 C 14 4, 28 5, 35 4 C 36 14, 35 27, 36 35 C 26 34, 13 36, 5 35 C 6 25, 4 15, 5 6 Z"></path></svg>
+              <svg class="checkbox-tick" id="plusOneTick" viewBox="0 0 40 40" fill="none" stroke="#8c2839" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21 C 11 25, 14 31, 16 34 C 21 22, 29 10, 37 2"></path></svg>
+            </span>
+            <span>Voy con acompañante</span>
+          </div>
+
+          <input class="rsvp-input" id="plusOneInput" type="text" name="acompanante" placeholder="Nombre del acompañante..." hidden>
+
+          <textarea class="rsvp-input rsvp-textarea" name="intolerancias" placeholder="¿Alguna intolerancia o alergia alimentaria?" rows="2"></textarea>
+
+          <textarea class="rsvp-input rsvp-textarea" name="mensaje" placeholder="Déjanos un mensaje..." rows="3"></textarea>
+
+          <div class="rsvp-buttons">
+            <button type="button" class="rsvp-choice" id="btnYes" data-value="yes">¡Allí estaré!</button>
+            <button type="button" class="rsvp-choice" id="btnNo" data-value="no">No podré :(</button>
+          </div>
+
+          <button type="submit" class="rsvp-send">Enviar →</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===== APARCAMIENTO Y ALOJAMIENTO ===== -->
+    <section class="details-block stay-block">
+      <p class="reveal details-title">Aparcamiento y alojamiento</p>
+      <div class="details-grid">
+        <div class="reveal detail-card">
+          <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.4" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <svg class="detail-icon" viewBox="0 0 60 44" fill="none" stroke="#8c2839" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 26 C 12 18, 15 12, 22 11 C 30 10, 39 11, 44 13 C 49 15, 52 20, 53 26"></path>
+            <path d="M7 27 C 5 30, 6 34, 9 35 L 52 35 C 55 34, 56 30, 54 27 C 40 24, 22 24, 7 27 Z"></path>
+            <circle cx="18" cy="35" r="4.5"></circle>
+            <circle cx="45" cy="35" r="4.5"></circle>
+            <path d="M24 13 L 25 24 M 38 12 L 38 24"></path>
+          </svg>
+          <h3>¿Dónde aparco?</h3>
+          <p><span class="stay-link">Parking Bajamar</span><br>A un paseo del Castillo de San Marcos</p>
+        </div>
+        <div class="reveal detail-card">
+          <svg class="scribble-border" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.4" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <svg class="detail-icon" viewBox="0 0 60 44" fill="none" stroke="#8c2839" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 10 C 9 18, 8 28, 8 36"></path>
+            <path d="M8 30 C 22 28, 40 29, 52 29 L 52 36"></path>
+            <path d="M8 24 C 22 22, 40 23, 52 24 L 52 29"></path>
+            <path d="M13 18 C 17 16, 21 17, 22 20 C 18 21, 14 21, 13 18 Z"></path>
+          </svg>
+          <h3>¿Dónde duermo?</h3>
+          <p>
+            <span class="stay-link">Apartamentos Mylord</span><br>
+            <span class="stay-link">Soho Boutique</span><br>
+            <span class="stay-link">Hotel Bodega Real</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PIE ===== -->
+    <footer class="footer">
+      <svg class="footer-tulip" viewBox="0 0 100 140"><use href="#lineTulip" width="100" height="140"></use></svg>
+      <p class="footer-names">Salva y Rocío</p>
+      <p class="footer-note">10 · 10 · 2026 &nbsp;·&nbsp; Os esperamos</p>
+    </footer>
+
+  </main>
+
+  <!-- música de fondo: pon tu canción como "musica.mp3" en esta carpeta -->
+  <audio id="bgMusic" data-src="musica.mp3" loop preload="none"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

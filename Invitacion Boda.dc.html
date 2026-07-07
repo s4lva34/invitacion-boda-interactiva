@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Patrick+Hand&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #f0e6d2; }
+  @keyframes wiggle { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+  @keyframes bob { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+  @keyframes pulseHint { 0%,100% { opacity: .5; transform: translateY(0); } 50% { opacity: 1; transform: translateY(3px); } }
+  @keyframes driftUp { 0% { transform: translateY(40px) rotate(-6deg); opacity: 0; } 14% { opacity: .55; } 86% { opacity: .4; } 100% { transform: translateY(-94vh) rotate(20deg); opacity: 0; } }
+  @keyframes bgDrift { 0% { transform: translate(0,0); } 100% { transform: translate(-24px,-30px); } }
+  @keyframes strollBob { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-7px) rotate(1deg); } }
+  @keyframes legSwingA { 0%,100% { transform: rotate(16deg); } 50% { transform: rotate(-16deg); } }
+  @keyframes legSwingB { 0%,100% { transform: rotate(-16deg); } 50% { transform: rotate(16deg); } }
+  @keyframes floatHeart { 0% { transform: translateY(0) scale(.5) rotate(-8deg); opacity: 0; } 18% { opacity: .95; } 100% { transform: translateY(-96px) scale(1) rotate(8deg); opacity: 0; } }
+  @keyframes squash { 0% { transform: scaleY(.7) scaleX(1.15); } 45% { transform: scaleY(1.06) scaleX(.96); } 100% { transform: scaleY(1) scaleX(1); } }
+  @keyframes armSwingA { 0%,100% { transform: rotate(12deg); } 50% { transform: rotate(-12deg); } }
+  @keyframes armSwingB { 0%,100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
+  @keyframes throb { 0%,100% { transform: scale(.85); opacity: .9; } 50% { transform: scale(1.3); opacity: .4; } }
+  @keyframes shiver { 0%,100% { transform: rotate(-2.4deg); } 50% { transform: rotate(2.4deg); } }
+</style>
+</helmet>
+
+<div style="font-family: 'Patrick Hand', cursive; color: #8c2839; background: #f0e6d2; overflow-x: hidden; position: relative;">
+
+  <template id="__bundler_thumbnail">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="#f0e6d2"></rect>
+      <g transform="translate(50 52) scale(0.62)" fill="none" stroke="#8c2839" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M-14 -12 C-18 -30, -6 -38, 0 -28 C6 -38, 18 -30, 14 -12 C14 0, -14 0, -14 -12 Z"></path>
+        <path d="M-6 -26 C-8 -18, -8 -8, -4 0"></path>
+        <path d="M6 -26 C8 -18, 8 -8, 4 0"></path>
+        <path d="M0 0 C1 14, -3 28, 2 38"></path>
+        <path d="M-40 34 C-20 28, -6 42, 2 38 C10 34, 24 34, 42 36"></path>
+      </g>
+    </svg>
+  </template>
+
+  <!-- faint hand-drawn tulip wallpaper -->
+  <svg aria-hidden="true" style="position: fixed; top: -6%; left: -6%; width: 112%; height: 112%; z-index: 0; opacity: 0.12; color: #8c2839; pointer-events: none; animation: bgDrift 44s ease-in-out infinite alternate;" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <symbol id="lineTulip" viewBox="0 0 120 66">
+        <path d="M38 24 C34 12, 44 7, 48 15 C49 9, 55 9, 56 15 C60 7, 70 12, 66 24 C66 33, 38 33, 38 24 Z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"></path>
+        <path d="M48 15 C47 20, 47 26, 49 30" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"></path>
+        <path d="M56 15 C57 20, 57 26, 55 30" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"></path>
+        <path d="M52 33 C53 41, 49 49, 53 55" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"></path>
+        <path d="M8 53 C24 49, 40 56, 50 54 C54 53, 56 53, 60 53 C78 53, 98 49, 112 52" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+      <pattern id="tulipPat" width="250" height="250" patternUnits="userSpaceOnUse" patternTransform="rotate(-3)">
+        <use href="#lineTulip" x="6" y="8" width="120" height="66"></use>
+        <use href="#lineTulip" x="135" y="100" width="100" height="55"></use>
+        <use href="#lineTulip" x="50" y="175" width="90" height="50"></use>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#tulipPat)"></rect>
+  </svg>
+
+  <!-- ambient drifting tulips across the whole invitation -->
+  <svg viewBox="0 0 120 66" style="position: fixed; left: 8%; bottom: -60px; width: 78px; height: 43px; color: #8c2839; opacity: .42; pointer-events: none; z-index: 0; animation: driftUp 15s ease-in 0s infinite;"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+  <svg viewBox="0 0 120 66" style="position: fixed; left: 26%; bottom: -60px; width: 64px; height: 35px; color: #8c2839; opacity: .38; pointer-events: none; z-index: 0; animation: driftUp 19s ease-in 4s infinite;"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+  <svg viewBox="0 0 120 66" style="position: fixed; left: 48%; bottom: -60px; width: 92px; height: 51px; color: #8c2839; opacity: .4; pointer-events: none; z-index: 0; animation: driftUp 13s ease-in 7s infinite;"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+  <svg viewBox="0 0 120 66" style="position: fixed; left: 66%; bottom: -60px; width: 70px; height: 38px; color: #8c2839; opacity: .4; pointer-events: none; z-index: 0; animation: driftUp 17s ease-in 2s infinite;"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+  <svg viewBox="0 0 120 66" style="position: fixed; left: 82%; bottom: -60px; width: 84px; height: 46px; color: #8c2839; opacity: .38; pointer-events: none; z-index: 0; animation: driftUp 21s ease-in 9s infinite;"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+  <svg viewBox="0 0 120 66" style="position: fixed; left: 92%; bottom: -60px; width: 58px; height: 32px; color: #8c2839; opacity: .35; pointer-events: none; z-index: 0; animation: driftUp 16s ease-in 12s infinite;"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+
+  <!-- ====================== GATE ====================== -->
+  <sc-if value="{{ showGate }}" hint-placeholder-val="{{ true }}">
+    <div style="{{ gateStyle }}">
+      <div style="{{ gateInnerStyle }}" onClick="{{ enter }}">
+        <p style="font-family: 'Gloria Hallelujah', cursive; font-size: 20px; letter-spacing: .12em; color: #8c2839;">est&aacute;s invitad@ a la boda de</p>
+        <p style="font-family: 'Gloria Hallelujah', cursive; font-size: clamp(22px, 6vw, 40px); color: #8c2839; white-space: nowrap;">Salva y Roc&iacute;o</p>
+        <div style="{{ stageStyle }}">
+          <svg viewBox="0 0 120 66" style="{{ idleTulipStyle }}" stroke-linejoin="round"><use href="#lineTulip" x="0" y="0" width="120" height="66" style="color: #8c2839;"></use></svg>
+
+          <svg viewBox="0 0 300 12" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" style="{{ groundStyle }}"><path d="M4 7 C 58 3, 118 11, 176 6 C 226 2, 268 10, 296 6"></path></svg>
+
+          <!-- WOMAN -->
+          <div style="{{ womanStyle }}">
+            <svg viewBox="0 0 30 30" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" style="{{ womanPainStyle }}"><path d="M15 2 L15 8"></path><path d="M15 28 L15 22"></path><path d="M2 15 L8 15"></path><path d="M28 15 L22 15"></path><path d="M5 5 L9 9"></path><path d="M25 5 L21 9"></path><path d="M5 25 L9 21"></path><path d="M25 25 L21 21"></path></svg>
+            <div style="{{ womanBobStyle }}">
+              <svg viewBox="0 0 60 132" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="{{ womanStandStyle }}">
+                <circle cx="30" cy="16" r="9"></circle>
+                <path d="M21 12 C 18 18, 18 26, 21 31"></path><path d="M39 12 C 42 18, 42 26, 39 31"></path>
+                <path d="M30 27 C 26 45, 20 64, 15 82 C 30 86, 30 86, 45 82 C 40 64, 34 45, 30 27 Z"></path>
+                <path d="M30 36 C 24 44, 19 50, 14 55"></path><path d="M30 36 C 36 44, 41 50, 46 55"></path>
+                <path d="M25 82 C 24 92, 24 102, 24 112"></path><path d="M35 82 C 36 92, 36 102, 36 112"></path>
+                <path d="M24 112 C 20 113, 17 113, 16 112"></path><path d="M36 112 C 40 113, 43 113, 44 112"></path>
+              </svg>
+              <svg viewBox="0 0 60 132" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="{{ womanSitStyle }}">
+                <circle cx="30" cy="46" r="9"></circle>
+                <path d="M21 42 C 18 48, 18 56, 21 61"></path><path d="M39 42 C 42 48, 42 56, 39 61"></path>
+                <path d="M30 57 C 24 74, 16 88, 10 96 C 30 100, 30 100, 50 96 C 44 88, 36 74, 30 57 Z"></path>
+                <path d="M30 66 C 24 76, 20 84, 17 92"></path><path d="M30 66 C 36 76, 40 84, 43 92"></path>
+                <path d="M22 94 C 18 100, 13 102, 8 102"></path><path d="M38 94 C 42 100, 47 102, 52 102"></path>
+              </svg>
+              <svg viewBox="0 0 60 132" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="{{ womanWalkStyle }}">
+                <circle cx="30" cy="16" r="9"></circle>
+                <path d="M21 12 C 18 18, 18 26, 21 31"></path><path d="M39 12 C 42 18, 42 26, 39 31"></path>
+                <path d="M30 27 C 26 45, 20 64, 15 82 C 30 86, 30 86, 45 82 C 40 64, 34 45, 30 27 Z"></path>
+                <g style="{{ armSwingBStyle }}"><path d="M30 36 C 25 45, 21 51, 18 57"></path></g>
+                <g style="{{ armSwingAStyle }}"><path d="M30 36 C 35 45, 39 51, 42 57"></path></g>
+                <g style="{{ legSwingBStyle }}"><path d="M26 82 C 25 92, 24 102, 24 112"></path><path d="M24 112 C 20 113, 17 113, 16 112"></path></g>
+                <g style="{{ legSwingAStyle }}"><path d="M34 82 C 35 92, 36 102, 36 112"></path><path d="M36 112 C 40 113, 43 113, 44 112"></path></g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- MAN -->
+          <div style="{{ manStyle }}">
+            <svg viewBox="0 0 30 30" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" style="{{ manPainStyle }}"><path d="M15 2 L15 8"></path><path d="M15 28 L15 22"></path><path d="M2 15 L8 15"></path><path d="M28 15 L22 15"></path><path d="M5 5 L9 9"></path><path d="M25 5 L21 9"></path><path d="M5 25 L9 21"></path><path d="M25 25 L21 21"></path></svg>
+            <div style="{{ manBobStyle }}">
+              <svg viewBox="0 0 60 132" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="{{ manStandStyle }}">
+                <circle cx="30" cy="16" r="9"></circle>
+                <path d="M30 25 C 30 40, 30 56, 30 70"></path>
+                <path d="M30 38 C 24 46, 18 52, 13 58"></path><path d="M30 38 C 36 46, 42 52, 47 58"></path>
+                <path d="M30 70 C 27 84, 22 98, 20 112"></path><path d="M30 70 C 33 84, 38 98, 40 112"></path>
+                <path d="M20 112 C 16 113, 12 113, 11 112"></path><path d="M40 112 C 44 113, 48 113, 49 112"></path>
+              </svg>
+              <svg viewBox="0 0 60 132" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="{{ manSitStyle }}">
+                <circle cx="30" cy="44" r="9"></circle>
+                <path d="M30 53 C 30 66, 30 78, 30 88"></path>
+                <path d="M30 62 C 24 72, 20 82, 17 90"></path><path d="M30 62 C 36 72, 40 82, 43 90"></path>
+                <path d="M30 88 C 24 94, 18 98, 12 98 C 12 102, 12 106, 14 109"></path>
+                <path d="M30 88 C 36 94, 42 98, 48 98 C 48 102, 48 106, 46 109"></path>
+              </svg>
+              <svg viewBox="0 0 60 132" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="{{ manWalkStyle }}">
+                <circle cx="30" cy="16" r="9"></circle>
+                <path d="M30 25 C 30 40, 30 56, 30 70"></path>
+                <g style="{{ armSwingAStyle }}"><path d="M30 38 C 25 47, 21 53, 18 60"></path></g>
+                <g style="{{ armSwingBStyle }}"><path d="M30 38 C 35 47, 39 53, 42 60"></path></g>
+                <g style="{{ legSwingAStyle }}"><path d="M30 70 C 29 84, 27 98, 26 112"></path><path d="M26 112 C 22 113, 19 113, 18 112"></path></g>
+                <g style="{{ legSwingBStyle }}"><path d="M30 70 C 31 84, 33 98, 34 112"></path><path d="M34 112 C 38 113, 41 113, 42 112"></path></g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- HEARTS -->
+          <svg viewBox="0 0 24 22" fill="#8c2839" style="{{ heart1Style }}"><path d="M12 20 C 12 20, 2 13.5, 2 7.5 C 2 4.4, 4.4 2.2, 7.2 2.4 C 9.3 2.6, 11 4.2, 12 6 C 13 4.2, 14.7 2.6, 16.8 2.4 C 19.6 2.2, 22 4.4, 22 7.5 C 22 13.5, 12 20, 12 20 Z"></path></svg>
+          <svg viewBox="0 0 24 22" fill="#8c2839" style="{{ heart2Style }}"><path d="M12 20 C 12 20, 2 13.5, 2 7.5 C 2 4.4, 4.4 2.2, 7.2 2.4 C 9.3 2.6, 11 4.2, 12 6 C 13 4.2, 14.7 2.6, 16.8 2.4 C 19.6 2.2, 22 4.4, 22 7.5 C 22 13.5, 12 20, 12 20 Z"></path></svg>
+          <svg viewBox="0 0 24 22" fill="#8c2839" style="{{ heart3Style }}"><path d="M12 20 C 12 20, 2 13.5, 2 7.5 C 2 4.4, 4.4 2.2, 7.2 2.4 C 9.3 2.6, 11 4.2, 12 6 C 13 4.2, 14.7 2.6, 16.8 2.4 C 19.6 2.2, 22 4.4, 22 7.5 C 22 13.5, 12 20, 12 20 Z"></path></svg>
+          <svg viewBox="0 0 24 22" fill="#8c2839" style="{{ heart4Style }}"><path d="M12 20 C 12 20, 2 13.5, 2 7.5 C 2 4.4, 4.4 2.2, 7.2 2.4 C 9.3 2.6, 11 4.2, 12 6 C 13 4.2, 14.7 2.6, 16.8 2.4 C 19.6 2.2, 22 4.4, 22 7.5 C 22 13.5, 12 20, 12 20 Z"></path></svg>
+          <svg viewBox="0 0 24 22" fill="#8c2839" style="{{ heart5Style }}"><path d="M12 20 C 12 20, 2 13.5, 2 7.5 C 2 4.4, 4.4 2.2, 7.2 2.4 C 9.3 2.6, 11 4.2, 12 6 C 13 4.2, 14.7 2.6, 16.8 2.4 C 19.6 2.2, 22 4.4, 22 7.5 C 22 13.5, 12 20, 12 20 Z"></path></svg>
+        </div>
+        <p style="{{ gateHintStyle }}">toca el tulip&aacute;n</p>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ entered }}" hint-placeholder-val="{{ false }}">
+  <div style="position: relative; z-index: 1;">
+
+    <!-- ====================== HERO QUOTE CARD ====================== -->
+    <section style="position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px 22px; overflow: hidden;">
+      <svg viewBox="0 0 120 66" style="position: absolute; left: 5%; bottom: 8%; width: 88px; height: 48px; color: #8c2839; opacity: .5; pointer-events: none; animation: driftUp 13s ease-in 0s infinite;"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+      <svg viewBox="0 0 120 66" style="position: absolute; left: 84%; bottom: 12%; width: 100px; height: 55px; color: #8c2839; opacity: .45; pointer-events: none; animation: driftUp 16s ease-in 4s infinite;"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+
+      <div data-reveal style="position: relative; width: 100%; max-width: 660px; background: #f8f2e4; padding: clamp(34px, 6vw, 60px) clamp(26px, 6vw, 56px) clamp(30px, 5vw, 48px); box-shadow: 0 26px 60px rgba(80,60,40,.16); transform: rotate(-1.2deg);">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px); pointer-events: none; overflow: visible;"><path d="M 3 4 C 32 2, 64 7, 97 3 C 95 34, 98 66, 96 97 C 64 95, 36 99, 4 96 C 5 64, 2 36, 3 4 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+
+        <div style="font-family: 'Gloria Hallelujah', cursive; font-size: clamp(22px, 5.4vw, 40px); line-height: 1.65; text-align: center; color: #8c2839;">
+          <div><span style="display:inline-block; transform:rotate(-2deg);">CUANDO</span> <span style="display:inline-block; transform:rotate(1deg);">QUIERES</span></div>
+          <div><span style="display:inline-block; transform:rotate(1deg);">PASAR</span> <span style="display:inline-block;">EL</span> <span style="display:inline-block; transform:rotate(-1deg);">RESTO</span></div>
+          <div><span style="display:inline-block;">DE</span> <span style="display:inline-block; transform:rotate(2deg);">TU</span> <span style="display:inline-block; transform:rotate(-1deg);">VIDA</span></div>
+          <div><span style="display:inline-block;">C</span><svg viewBox="0 0 24 22" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; width:.82em; height:.82em; vertical-align:-.06em; margin:0 .02em; transform: translateY(3px) rotate(-8deg);"><path d="M12 20 C 12 20, 2 13.5, 2 7.5 C 2 4.4, 4.4 2.2, 7.2 2.4 C 9.3 2.6, 11 4.2, 12 6 C 13 4.2, 14.7 2.6, 16.8 2.4 C 19.6 2.2, 22 4.4, 22 7.5 C 22 13.5, 12 20, 12 20 Z"></path></svg><span style="display:inline-block;">N</span> <span style="display:inline-block; transform:rotate(1deg);">ALGUIEN</span></div>
+          <div><span style="display:inline-block; transform:rotate(-1deg);">QUIERES</span> <span style="display:inline-block;">QUE</span> <span style="display:inline-block; transform:rotate(2deg);">EL</span></div>
+          <div><span style="display:inline-block; transform:rotate(1deg);">RESTO</span> <span style="display:inline-block;">DE</span> <span style="display:inline-block; transform:rotate(-1deg);">TU</span> <span style="display:inline-block;">VIDA</span></div>
+          <div><span style="display:inline-block; transform:rotate(-2deg);">EMPIECE</span> <span style="display:inline-block; font-size:1.3em; transform:rotate(3deg);">YA.</span></div>
+        </div>
+
+        <svg viewBox="0 0 120 66" style="display:block; margin: 16px auto 6px; width: 130px; height: 72px; color: #8c2839;" stroke-linejoin="round"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+        <p style="font-family: 'Gloria Hallelujah', cursive; text-align: center; font-size: 15px; letter-spacing: .14em; color: #8c2839;">SALVA Y ROC&Iacute;O</p>
+
+        <div style="position: absolute; right: clamp(14px, 4vw, 30px); bottom: clamp(8px, 2vw, 16px); display: flex; flex-direction: column; align-items: center; transform: rotate(-9deg); pointer-events: none;">
+          <div style="font-family: 'Caveat', cursive; font-weight: 700; font-size: clamp(30px, 7vw, 42px); color: #8c2839; line-height: 1; letter-spacing: -.01em;">
+            <span style="display: inline-block; transform: rotate(-6deg) translateY(2px);">b</span><span style="display: inline-block; transform: rotate(5deg) translateY(-2px) scale(1.1);">r</span><span style="display: inline-block; transform: rotate(-4deg) translateY(1px);">u</span><span style="display: inline-block; transform: rotate(7deg) translateY(-3px) scale(.92);">n</span><span style="display: inline-block; transform: rotate(-8deg) translateY(2px) scale(1.15);">a</span>
+          </div>
+          <svg viewBox="0 0 90 16" style="width: clamp(64px, 15vw, 92px); height: 14px; margin-top: -2px;" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round"><path d="M3 9 C 18 3, 34 13, 50 6 C 63 1, 76 11, 87 5"></path></svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== FECHA ====================== -->
+    <section style="text-align: center; padding: 30px 22px 70px;">
+      <p data-reveal style="font-family: 'Gloria Hallelujah', cursive; font-size: clamp(18px, 4vw, 24px); color: #8c2839; letter-spacing: .08em;">&iexcl;nos casamos!</p>
+      <p data-reveal style="font-family: 'Gloria Hallelujah', cursive; font-size: clamp(34px, 9vw, 62px); margin-top: 14px; color: #8c2839;">10 &middot; 10 &middot; 2026</p>
+      <p data-reveal style="font-family: 'Patrick Hand', cursive; font-size: 21px; color: #8c2839; margin-top: 10px;">Chiclana &mdash; Puerto de Santa Mar&iacute;a</p>
+    </section>
+
+    <!-- ====================== COUNTDOWN ====================== -->
+    <section style="padding: 10px 22px 80px; text-align: center;">
+      <p data-reveal style="font-family: 'Gloria Hallelujah', cursive; font-size: 20px; color: #8c2839; margin-bottom: 30px;">falta poquito&hellip;</p>
+      <div data-reveal style="display: flex; justify-content: center; gap: clamp(12px, 4vw, 30px); flex-wrap: wrap;">
+        <div style="position: relative; background: #f8f2e4; padding: 22px 8px 16px; min-width: 92px;">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible;"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <div style="position: relative; font-family: 'Gloria Hallelujah', cursive; font-size: clamp(34px, 8vw, 52px); color: #8c2839; animation: bob 3.4s ease-in-out 0s infinite;" id="cd-days">--</div>
+          <div style="position: relative; font-family: 'Patrick Hand', cursive; font-size: 16px; color: #8c2839; margin-top: 4px;">d&iacute;as</div>
+        </div>
+        <div style="position: relative; background: #f8f2e4; padding: 22px 8px 16px; min-width: 92px;">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible;"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <div style="position: relative; font-family: 'Gloria Hallelujah', cursive; font-size: clamp(34px, 8vw, 52px); color: #8c2839; animation: bob 3.4s ease-in-out .25s infinite;" id="cd-hours">--</div>
+          <div style="position: relative; font-family: 'Patrick Hand', cursive; font-size: 16px; color: #8c2839; margin-top: 4px;">horas</div>
+        </div>
+        <div style="position: relative; background: #f8f2e4; padding: 22px 8px 16px; min-width: 92px;">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible;"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <div style="position: relative; font-family: 'Gloria Hallelujah', cursive; font-size: clamp(34px, 8vw, 52px); color: #8c2839; animation: bob 3.4s ease-in-out .5s infinite;" id="cd-mins">--</div>
+          <div style="position: relative; font-family: 'Patrick Hand', cursive; font-size: 16px; color: #8c2839; margin-top: 4px;">min</div>
+        </div>
+        <div style="position: relative; background: #f8f2e4; padding: 22px 8px 16px; min-width: 92px;">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible;"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <div style="position: relative; font-family: 'Gloria Hallelujah', cursive; font-size: clamp(34px, 8vw, 52px); color: #8c2839; animation: bob 3.4s ease-in-out .75s infinite;" id="cd-secs">--</div>
+          <div style="position: relative; font-family: 'Patrick Hand', cursive; font-size: 16px; color: #8c2839; margin-top: 4px;">seg</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== DETALLES ====================== -->
+    <section style="padding: 10px 22px 80px; max-width: 920px; margin: 0 auto;">
+      <p data-reveal style="text-align: center; font-family: 'Gloria Hallelujah', cursive; font-size: clamp(26px, 6vw, 40px); color: #8c2839; margin-bottom: 40px;">el gran d&iacute;a</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 26px;">
+        <div data-reveal style="position: relative; background: #f8f2e4; padding: 40px 30px 34px; text-align: center;">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible;"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.4" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <svg viewBox="0 0 120 66" style="position: relative; display: block; margin: 0 auto 12px; width: 110px; height: 60px; color: #8c2839;" stroke-linejoin="round"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+          <h3 style="position: relative; font-family: 'Gloria Hallelujah', cursive; font-size: 26px; color: #8c2839;">Ceremonia</h3>
+          <p style="position: relative; font-family: 'Patrick Hand', cursive; font-size: 20px; color: #8c2839; margin-top: 12px; line-height: 1.6;">12:00 hrs<br>Parroquia San Juan Bautista<br>Chiclana de la Frontera</p>
+        </div>
+        <div data-reveal style="position: relative; background: #f8f2e4; padding: 40px 30px 34px; text-align: center;">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible;"><path d="M 4 5 C 34 2, 66 8, 96 4 C 94 34, 97 66, 95 96 C 66 94, 36 98, 5 95 C 6 66, 3 36, 4 5 Z" fill="none" stroke="#8c2839" stroke-width="1.4" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+          <svg viewBox="0 0 120 66" style="position: relative; display: block; margin: 0 auto 12px; width: 110px; height: 60px; color: #8c2839;" stroke-linejoin="round"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+          <h3 style="position: relative; font-family: 'Gloria Hallelujah', cursive; font-size: 26px; color: #8c2839;">Celebraci&oacute;n</h3>
+          <p style="position: relative; font-family: 'Patrick Hand', cursive; font-size: 20px; color: #8c2839; margin-top: 12px; line-height: 1.6;">13:30 hrs<br>Castillo de San Marcos<br>El Puerto de Santa Mar&iacute;a</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== DRESS CODE ====================== -->
+    <section style="padding: 10px 22px 80px; text-align: center; max-width: 640px; margin: 0 auto;">
+      <p data-reveal style="font-family: 'Gloria Hallelujah', cursive; font-size: clamp(22px, 5vw, 32px); color: #8c2839;">&iquest;qu&eacute; me pongo?</p>
+      <p data-reveal style="font-family: 'Patrick Hand', cursive; font-size: 21px; color: #8c2839; margin-top: 10px;">Formal &mdash; elegante</p>
+      <div data-reveal style="display: flex; justify-content: center; align-items: flex-end; gap: clamp(20px, 6vw, 40px); margin-top: 26px; flex-wrap: wrap;">
+        <svg viewBox="0 0 48 52" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 54px; height: 58px; animation: wiggle 3.4s ease-in-out 0s infinite;">
+          <path d="M20 7 L19 10 M28 7 L29 10"></path>
+          <path d="M19 10 C 22 14, 26 14, 29 10"></path>
+          <path d="M19 10 L17 25 M29 10 L31 25"></path>
+          <path d="M17 25 L31 25"></path>
+          <path d="M17 25 L11 45 L37 45 L31 25"></path>
+        </svg>
+        <svg viewBox="0 0 48 52" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 54px; height: 58px; animation: wiggle 3.4s ease-in-out .25s infinite;">
+          <path d="M14 12 L20 8 L24 22 L28 8 L34 12"></path>
+          <path d="M14 12 L14 45 L34 45 L34 12"></path>
+          <path d="M20 8 L23 20 M28 8 L25 20"></path>
+          <path d="M24 22 L24 45"></path>
+          <circle cx="27" cy="28" r="0.8" fill="#8c2839" stroke="none"></circle>
+          <circle cx="27" cy="34" r="0.8" fill="#8c2839" stroke="none"></circle>
+        </svg>
+        <svg viewBox="0 0 48 52" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 54px; height: 58px; animation: wiggle 3.4s ease-in-out .5s infinite;">
+          <path d="M8 24 Q 22 21 38 26"></path>
+          <path d="M8 24 Q 7 31 13 36"></path>
+          <path d="M38 26 Q 40 33 35 35 Q 22 39 13 36"></path>
+          <path d="M13 36 L12 46 L16 46 L16 35"></path>
+        </svg>
+        <svg viewBox="0 0 48 52" fill="none" stroke="#8c2839" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 54px; height: 58px; animation: wiggle 3.4s ease-in-out .75s infinite;">
+          <path d="M8 34 Q 8 27 16 27 L27 27 Q 36 27 41 34 Q 42 38 38 38 L11 38 Q 8 38 8 34 Z"></path>
+          <path d="M16 27 L17 33 M20 27 L21 33"></path>
+          <path d="M27 27 Q 30 32 34 34"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ====================== RSVP ====================== -->
+    <section style="padding: 10px 22px 90px; text-align: center;">
+      <div data-reveal style="position: relative; max-width: 520px; margin: 0 auto; background: #f8f2e4; padding: 46px 32px 40px;">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible;"><path d="M 3 4 C 32 2, 64 7, 97 3 C 95 34, 98 66, 96 97 C 64 95, 36 99, 4 96 C 5 64, 2 36, 3 4 Z" fill="none" stroke="#8c2839" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path></svg>
+        <p style="position: relative; font-family: 'Gloria Hallelujah', cursive; font-size: clamp(24px, 6vw, 36px); color: #8c2839;">&iquest;nos acompa&ntilde;as?</p>
+        <p style="position: relative; font-family: 'Patrick Hand', cursive; font-size: 19px; color: #8c2839; margin-top: 10px;">Confirma antes del 10 de septiembre 2026</p>
+        <div style="position: relative; display: flex; flex-direction: column; gap: 16px; margin-top: 26px;">
+          <input placeholder="tu nombre..." style="font-family: 'Patrick Hand', cursive; font-size: 19px; padding: 8px 4px; border: none; border-bottom: 2px solid #8c2839; background: transparent; color: #8c2839; outline: none; text-align: center;">
+          <div onClick="{{ togglePlusOne }}" style="display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; user-select: none; margin-top: 4px;">
+            <span style="position: relative; display: inline-flex; width: 34px; height: 34px; flex: none;">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#8c2839" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width: 100%; height: 100%;"><path d="M5 6 C 14 4, 28 5, 35 4 C 36 14, 35 27, 36 35 C 26 34, 13 36, 5 35 C 6 25, 4 15, 5 6 Z"></path></svg>
+              <sc-if value="{{ plusOne }}" hint-placeholder-val="{{ false }}">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#8c2839" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-4deg);"><path d="M7 21 C 11 25, 14 31, 16 34 C 21 22, 29 10, 37 2"></path></svg>
+              </sc-if>
+            </span>
+            <span style="font-family: 'Patrick Hand', cursive; font-size: 19px; color: #8c2839;">voy con acompa&ntilde;ante</span>
+          </div>
+          <sc-if value="{{ plusOne }}" hint-placeholder-val="{{ false }}">
+            <input placeholder="nombre del acompa&ntilde;ante..." style="font-family: 'Patrick Hand', cursive; font-size: 19px; padding: 8px 4px; border: none; border-bottom: 2px solid #8c2839; background: transparent; color: #8c2839; outline: none; text-align: center;">
+          </sc-if>
+          <div style="display: flex; gap: 12px;">
+            <button onClick="{{ pickYes }}" style="{{ yesBtnStyle }}">&iexcl;all&iacute; estar&eacute;!</button>
+            <button onClick="{{ pickNo }}" style="{{ noBtnStyle }}">no podr&eacute; :(</button>
+          </div>
+          <button style="font-family: 'Gloria Hallelujah', cursive; font-size: 16px; padding: 13px; background: #8c2839; color: #f8f2e4; border: none; border-radius: 14px 10px 16px 9px; cursor: pointer;">enviar &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== FOOTER ====================== -->
+    <footer style="text-align: center; padding: 30px 22px 70px;">
+      <svg viewBox="0 0 120 66" style="display: block; margin: 0 auto 10px; width: 116px; height: 64px; color: #8c2839;" stroke-linejoin="round"><use href="#lineTulip" x="0" y="0" width="120" height="66"></use></svg>
+      <p style="font-family: 'Gloria Hallelujah', cursive; font-size: clamp(26px, 6vw, 38px); color: #8c2839;">Salva y Roc&iacute;o</p>
+      <p style="font-family: 'Patrick Hand', cursive; font-size: 17px; color: #8c2839; margin-top: 8px; letter-spacing: .1em;">10 &middot; 10 &middot; 2026 &nbsp;&middot;&nbsp; os esperamos</p>
+    </footer>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { stage: 'idle', rsvp: null, plusOne: false };
+
+  componentDidMount() {
+    this.tick();
+    this._t = setInterval(() => this.tick(), 1000);
+  }
+
+  tick() {
+    const target = new Date('2026-10-10T16:00:00');
+    let d = Math.max(0, target - new Date());
+    const days = Math.floor(d / 86400000); d -= days * 86400000;
+    const hours = Math.floor(d / 3600000); d -= hours * 3600000;
+    const mins = Math.floor(d / 60000); d -= mins * 60000;
+    const secs = Math.floor(d / 1000);
+    const pad = (n) => String(n).padStart(2, '0');
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set('cd-days', pad(days)); set('cd-hours', pad(hours)); set('cd-mins', pad(mins)); set('cd-secs', pad(secs));
+  }
+
+  enter = () => {
+    if (this.state.stage !== 'idle') return;
+    this.setState({ stage: 'falling' });
+    setTimeout(() => this.setState({ stage: 'sitting' }), 150);
+    setTimeout(() => this.setState({ stage: 'standing' }), 1250);
+    setTimeout(() => this.setState({ stage: 'hugging' }), 2050);
+    setTimeout(() => this.setState({ stage: 'walking' }), 3100);
+    setTimeout(() => this.setState({ stage: 'entered' }), 5300);
+  };
+
+  componentWillUnmount() {
+    clearInterval(this._t);
+  }
+
+  renderVals() {
+    const stage = this.state.stage;
+    const gone = stage !== 'idle';
+    const dropped = stage === 'sitting' || stage === 'standing' || stage === 'hugging' || stage === 'walking';
+    const sitting = stage === 'sitting';
+    const hug = stage === 'hugging' || stage === 'walking';
+    const walking = stage === 'walking';
+    const gateStyle = {
+      position: 'fixed', inset: '0', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      background: '#f0e6d2', overflow: 'hidden', transition: 'opacity 1.5s ease .6s',
+      opacity: walking ? 0 : 1, pointerEvents: stage === 'idle' ? 'auto' : 'none',
+    };
+    const gateInnerStyle = {
+      position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center',
+      gap: '30px', cursor: 'pointer', userSelect: 'none', textAlign: 'center',
+    };
+    const stageStyle = { position: 'relative', width: '320px', maxWidth: '86vw', height: '200px', margin: '0 auto' };
+    const idleTulipStyle = {
+      position: 'absolute', left: '50%', bottom: '50px', marginLeft: '-60px', width: '120px', height: '66px',
+      transformOrigin: 'center bottom', transition: 'opacity .4s ease, transform .5s cubic-bezier(.5,0,.9,.3)',
+      opacity: gone ? 0 : 1, transform: gone ? 'translateY(-16px) scale(.6)' : 'scale(1)',
+      animation: stage === 'idle' ? 'wiggle 3.2s ease-in-out infinite' : 'none',
+    };
+    const groundStyle = {
+      position: 'absolute', left: '4%', width: '92%', bottom: '58px', height: '12px',
+      opacity: gone ? 1 : 0, transition: 'opacity .5s ease .2s',
+    };
+    const figTr = walking ? 'transform 2.2s linear, opacity .3s ease'
+      : hug ? 'transform .85s cubic-bezier(.34,1.3,.5,1), opacity .3s ease'
+      : 'transform .9s cubic-bezier(.4,0,.62,.35), opacity .25s ease';
+    const wY = dropped ? 0 : -380, wR = dropped ? 0 : -15;
+    let wX = 0; if (hug) wX = 44; if (walking) wX = 44 - 500;
+    const womanStyle = {
+      position: 'absolute', left: '54px', bottom: '44px', width: '60px', height: '132px', transformOrigin: 'center bottom',
+      transition: figTr, opacity: gone ? 1 : 0, transform: 'translate(' + wX + 'px, ' + wY + 'px) rotate(' + wR + 'deg)',
+    };
+    const mY = dropped ? 0 : -380, mR = dropped ? 0 : 15;
+    let mX = 0; if (hug) mX = -44; if (walking) mX = -44 - 500;
+    const manStyle = {
+      position: 'absolute', left: '186px', bottom: '44px', width: '60px', height: '132px', transformOrigin: 'center bottom',
+      transition: figTr, opacity: gone ? 1 : 0, transform: 'translate(' + mX + 'px, ' + mY + 'px) rotate(' + mR + 'deg)',
+    };
+    const hurt = stage === 'sitting' || stage === 'standing';
+    const bobRest = sitting ? 'squash .55s ease-out' : (stage === 'standing' ? 'shiver .3s ease-in-out infinite' : 'none');
+    const womanBobStyle = { position: 'absolute', inset: '0', transformOrigin: 'center bottom', animation: walking ? 'strollBob .5s ease-in-out infinite' : bobRest };
+    const manBobStyle = { position: 'absolute', inset: '0', transformOrigin: 'center bottom', animation: walking ? 'strollBob .5s ease-in-out .12s infinite' : bobRest };
+    const stand = !sitting && !walking;
+    const poseShow = { position: 'absolute', inset: '0', transition: 'opacity .3s ease' };
+    const womanStandStyle = { ...poseShow, opacity: stand ? 1 : 0 };
+    const womanSitStyle = { ...poseShow, opacity: sitting ? 1 : 0 };
+    const womanWalkStyle = { ...poseShow, opacity: walking ? 1 : 0 };
+    const manStandStyle = { ...poseShow, opacity: stand ? 1 : 0 };
+    const manSitStyle = { ...poseShow, opacity: sitting ? 1 : 0 };
+    const manWalkStyle = { ...poseShow, opacity: walking ? 1 : 0 };
+    const swing = (name) => ({ transformBox: 'fill-box', transformOrigin: '50% 0%', animation: name + ' .5s ease-in-out infinite' });
+    const legSwingAStyle = swing('legSwingA');
+    const legSwingBStyle = swing('legSwingB');
+    const armSwingAStyle = swing('armSwingA');
+    const armSwingBStyle = swing('armSwingB');
+    const painStyle = {
+      position: 'absolute', left: '50%', marginLeft: '-15px', top: '-12px', width: '30px', height: '30px', pointerEvents: 'none',
+      transition: 'opacity .3s ease', opacity: hurt ? 1 : 0,
+      animation: hurt ? 'throb .42s ease-in-out infinite' : 'none',
+    };
+    const womanPainStyle = painStyle;
+    const manPainStyle = { ...painStyle, animation: hurt ? 'throb .42s ease-in-out .2s infinite' : 'none' };
+    const heart = (left, bottom, size, delay, dur) => ({
+      position: 'absolute', left: left, bottom: bottom, width: size, height: size, pointerEvents: 'none', opacity: 0,
+      animation: hug ? ('floatHeart ' + dur + 's ease-in ' + delay + 's infinite') : 'none',
+    });
+    const heart1Style = heart('118px', '116px', '20px', 0, 2.2);
+    const heart2Style = heart('158px', '138px', '15px', 0.5, 2.6);
+    const heart3Style = heart('190px', '112px', '22px', 1.0, 2.3);
+    const heart4Style = heart('140px', '150px', '13px', 1.5, 2.8);
+    const heart5Style = heart('172px', '128px', '17px', 0.8, 2.5);
+    const gateHintStyle = {
+      fontFamily: "'Gloria Hallelujah', cursive", fontSize: '17px', letterSpacing: '.14em', color: '#8c2839',
+      animation: stage === 'idle' ? 'pulseHint 2.2s ease-in-out infinite' : 'none',
+      opacity: gone ? 0 : 1, transition: 'opacity .4s ease',
+    };
+    const yesActive = this.state.rsvp === 'yes';
+    const noActive = this.state.rsvp === 'no';
+    const btnBase = { flex: 1, padding: '13px 10px', fontFamily: "'Gloria Hallelujah', cursive", fontSize: '15px', cursor: 'pointer', borderRadius: '16px 11px 18px 10px', transition: 'all .2s ease' };
+    return {
+      showGate: stage !== 'entered',
+      entered: stage === 'entered',
+      enter: this.enter,
+      gateStyle, gateInnerStyle, stageStyle, idleTulipStyle, groundStyle, womanStyle, manStyle, womanBobStyle, manBobStyle, womanStandStyle, womanSitStyle, womanWalkStyle, manStandStyle, manSitStyle, manWalkStyle, womanPainStyle, manPainStyle, legSwingAStyle, legSwingBStyle, armSwingAStyle, armSwingBStyle, heart1Style, heart2Style, heart3Style, heart4Style, heart5Style, gateHintStyle,
+      plusOne: this.state.plusOne,
+      togglePlusOne: () => this.setState(s => ({ plusOne: !s.plusOne })),
+      pickYes: () => this.setState({ rsvp: 'yes' }),
+      pickNo: () => this.setState({ rsvp: 'no' }),
+      yesBtnStyle: { ...btnBase, border: '2px solid #8c2839', background: yesActive ? '#8c2839' : 'transparent', color: yesActive ? '#f8f2e4' : '#8c2839' },
+      noBtnStyle: { ...btnBase, border: '2px solid #8c2839', background: noActive ? '#8c2839' : 'transparent', color: noActive ? '#f8f2e4' : '#8c2839' },
+    };
+  }
+}
+</script>
+</body>
+</html>
